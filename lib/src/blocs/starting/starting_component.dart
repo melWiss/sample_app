@@ -22,6 +22,7 @@ class _StartingPointComponentState extends State<StartingPointComponent> {
   bool noConnectivity = false;
   bool showYesConnectivity = false;
   int waitingTurn = 0;
+  Location? selectedLocation;
 
   StreamSubscription<ConnectivityResult>? connectivitySubscription;
 
@@ -162,8 +163,27 @@ class _StartingPointComponentState extends State<StartingPointComponent> {
       return ListView.builder(
         itemCount: locations.length,
         itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(locations[index].name ?? ""),
+          return Padding(
+            padding: const EdgeInsets.all(4),
+            child: Material(
+              elevation: 2,
+              borderRadius: BorderRadius.circular(8),
+              child: ListTile(
+                selected: locations[index] == selectedLocation,
+                onTap: () {
+                  setState(() {
+                    if (locations[index] != selectedLocation) {
+                      selectedLocation = locations[index];
+                    } else {
+                      selectedLocation = null;
+                    }
+                  });
+                },
+                title: Text(locations[index].name ?? ""),
+                subtitle: Text(
+                    "Type: ${locations[index].type?.toUpperCase()}, Locality: ${locations[index].parent?.name?.toUpperCase()}"),
+              ),
+            ),
           );
         },
       );
