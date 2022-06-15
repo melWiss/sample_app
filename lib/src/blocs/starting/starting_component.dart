@@ -168,6 +168,7 @@ class _StartingPointComponentState extends State<StartingPointComponent> {
             child: Material(
               elevation: 2,
               borderRadius: BorderRadius.circular(8),
+              clipBehavior: Clip.antiAlias,
               child: ListTile(
                 selected: locations[index] == selectedLocation,
                 onTap: () {
