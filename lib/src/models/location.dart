@@ -58,14 +58,17 @@ class Location {
       id: map['id'],
       name: map['name'],
       disassembledName: map['disassembledName'],
-      coord: map['coord'] != null ? Coordinate.fromList(map['coord']) : null,
+      coord: map['coord'] != null
+          ? Coordinate.fromList(List<double>.from(map['coord']))
+          : null,
       type: map['type'],
       isBest: map['isBest'],
       parent: map['parent'] != null ? Parent.fromMap(map['parent']) : null,
     );
   }
 
-  String toJson() => json.encode(toMap());
+  Map<String, dynamic> toJson() => toMap();
+  // String toJson() => json.encode(toMap());
 
   factory Location.fromJson(String source) =>
       Location.fromMap(json.decode(source));

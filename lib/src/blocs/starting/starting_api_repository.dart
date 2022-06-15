@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:sample_app/src/blocs/starting/starting_cache_repository.dart';
@@ -17,8 +18,9 @@ class StartingPointApiRepository {
             (e) => Location.fromMap(e),
           )
           .toList();
+      StartingPointCacheRepository.cacheLocations(locations);
       return locations;
-    } on http.ClientException catch (e) {
+    } on SocketException catch (e) {
       throw StartingPointException(
         cachedLocations:
             await StartingPointCacheRepository.getCachedLocations(),

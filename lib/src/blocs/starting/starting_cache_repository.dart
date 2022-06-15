@@ -9,9 +9,14 @@ class StartingPointCacheRepository {
   static File? _db;
 
   static Future initDb() async {
-    var dir = await getApplicationSupportDirectory();
-    _db = File(join(dir.path, "db.json"));
-    if (!(_db?.existsSync() ?? false)) _db!.createSync();
+    if (_db == null) {
+      var dir = await getApplicationSupportDirectory();
+      _db = File(join(dir.path, "db.json"));
+      if (!(_db?.existsSync() ?? false)) {
+        _db!.createSync();
+        _db!.writeAsStringSync(jsonEncode([]));
+      }
+    }
   }
 
   static Future<List<Location>> getCachedLocations([String? keyword]) async {
@@ -41,6 +46,7 @@ class StartingPointCacheRepository {
       List<Location> cachedLocations = await getCachedLocations();
       uniqueLocations.addAll(cachedLocations);
       uniqueLocations.addAll(locations);
+      _db!.writeAsStringSync(jsonEncode(uniqueLocations.toList()));
       return true;
     } catch (e) {
       return false;

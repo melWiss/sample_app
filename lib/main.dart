@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sample_app/src/blocs/starting/starting_cache_repository.dart';
 import 'package:sample_app/src/blocs/starting/starting_component.dart';
 
-void main() {
+void main() async {
+  await StartingPointCacheRepository.initDb();
   runApp(MyApp());
 }
 
