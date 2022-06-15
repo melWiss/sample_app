@@ -56,7 +56,9 @@ class _HomeScreenState extends State<HomeScreen> {
           {
             setState(() {
               noConnectivity = false;
-              startingPointBloc.searchLocation(searchTextController.text);
+              if (searchTextController.text.isNotEmpty) {
+                startingPointBloc.searchLocation(searchTextController.text);
+              }
               showYesConnectivity = true;
             });
             Timer(Duration(seconds: 3), () {
@@ -127,59 +129,36 @@ class _HomeScreenState extends State<HomeScreen> {
                 style: TextStyle(color: Colors.white),
               ),
             ),
-          if (!emptyTextField)
-            Expanded(
-              child: StreamWidget<List<Location>>(
-                stream: startingPointBloc.stream,
-                onResult: (context, locations) {
-                  return ListView.builder(
-                    itemCount: locations!.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        title: Text(locations[index].name ?? ""),
-                      );
-                    },
-                  );
-                },
-                onError: (error) {
-                  StartingPointException exception =
-                      error as StartingPointException;
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      // Container(
-                      //   padding: const EdgeInsets.all(4),
-                      //   color: Colors.red,
-                      //   child: const Text(
-                      //     "Error has occured",
-                      //     textAlign: TextAlign.center,
-                      //     style: TextStyle(color: Colors.white),
-                      //   ),
-                      // ),
-                      Expanded(
-                        child: ListView.builder(
-                          itemCount: exception.cachedLocations.length,
-                          itemBuilder: (context, index) {
-                            return ListTile(
-                              title: Text(
-                                  exception.cachedLocations[index].name ?? ""),
-                            );
-                          },
-                        ),
-                      ),
-                    ],
-                  );
-                },
-              ),
+          Expanded(
+            child: StreamWidget<List<Location>>(
+              stream: startingPointBloc.stream,
+              onResult: (context, locations) => renderLocationsList(locations!),
+              onError: (error) {
+                StartingPointException exception =
+                    error as StartingPointException;
+                return renderLocationsList(exception.cachedLocations);
+              },
             ),
-          if (emptyTextField)
-            const Expanded(
-              child: Center(
-                child: Text("Please fill in the search field."),
-              ),
-            )
+          ),
         ],
       ),
     );
+  }
+
+  Widget renderLocationsList(List<Location> locations) {
+    if (locations.isNotEmpty) {
+      return ListView.builder(
+        itemCount: locations.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Text(locations[index].name ?? ""),
+          );
+        },
+      );
+    } else {
+      return const Center(
+        child: Text("No Result has been found"),
+      );
+    }
   }
 }
