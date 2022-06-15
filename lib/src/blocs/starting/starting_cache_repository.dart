@@ -8,7 +8,7 @@ import 'package:sample_app/src/models/location.dart';
 class StartingPointCacheRepository {
   static File? _db;
 
-  static Future initDb() async {
+  static Future<void> initDb() async {
     if (_db == null) {
       var dir = await getApplicationSupportDirectory();
       _db = File(join(dir.path, "db.json"));

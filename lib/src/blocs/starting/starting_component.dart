@@ -19,7 +19,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   TextEditingController searchTextController = TextEditingController();
-  bool emptyTextField = true;
+  bool firstTime = true;
   bool noConnectivity = false;
   bool showYesConnectivity = false;
   int waitingTurn = 0;
@@ -32,18 +32,19 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     searchTextController.addListener(() {
       waitingTurn++;
-      Timer(Duration(seconds: 2), (() {
-        if (--waitingTurn == 0) {
-          setState(() {
-            if (searchTextController.text.isEmpty) {
-              emptyTextField = true;
-            } else {
-              emptyTextField = false;
-              startingPointBloc.searchLocation(searchTextController.text);
-            }
-          });
-        }
-      }));
+      Timer(
+        Duration(seconds: 2),
+        (() {
+          if (--waitingTurn == 0) {
+            setState(() {
+              if (searchTextController.text.isNotEmpty) {
+                startingPointBloc.searchLocation(searchTextController.text);
+                firstTime = false;
+              }
+            });
+          }
+        }),
+      );
     });
 
     connectivitySubscription = Connectivity()
@@ -86,61 +87,72 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 8.0,
-              right: 8.0,
-              top: 8.0,
-            ),
-            child: TextField(
-              controller: searchTextController,
-              decoration: const InputDecoration(
-                labelText: "Search Field",
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(25),
+      body: Padding(
+        padding: EdgeInsets.only(top: MediaQuery.of(context).viewPadding.top),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                left: 8.0,
+                right: 8.0,
+                top: 8.0,
+              ),
+              child: TextField(
+                controller: searchTextController,
+                decoration: const InputDecoration(
+                  labelText: "Search Field",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(30),
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-          if (noConnectivity)
-            Container(
-              margin: const EdgeInsets.symmetric(vertical: 8),
-              padding: const EdgeInsets.all(4),
-              color: Colors.red,
-              child: const Text(
-                "No Internet Connectivity",
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white),
+            if (noConnectivity)
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 8),
+                padding: const EdgeInsets.all(4),
+                color: Colors.red,
+                child: const Text(
+                  "No Internet Connectivity",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
-            ),
-          if (!noConnectivity && showYesConnectivity)
-            Container(
-              margin: const EdgeInsets.symmetric(vertical: 8),
-              padding: const EdgeInsets.all(4),
-              color: Colors.green,
-              child: const Text(
-                "Internet Connectivity Is Established",
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white),
+            if (!noConnectivity && showYesConnectivity)
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 8),
+                padding: const EdgeInsets.all(4),
+                color: Colors.green,
+                child: const Text(
+                  "Internet Connectivity Is Established",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
-            ),
-          Expanded(
-            child: StreamWidget<List<Location>>(
-              stream: startingPointBloc.stream,
-              onResult: (context, locations) => renderLocationsList(locations!),
-              onError: (error) {
-                StartingPointException exception =
-                    error as StartingPointException;
-                return renderLocationsList(exception.cachedLocations);
-              },
-            ),
-          ),
-        ],
+            if (!firstTime)
+              Expanded(
+                child: StreamWidget<List<Location>>(
+                  stream: startingPointBloc.stream,
+                  onResult: (context, locations) =>
+                      renderLocationsList(locations!),
+                  onError: (error) {
+                    StartingPointException exception =
+                        error as StartingPointException;
+                    return renderLocationsList(exception.cachedLocations);
+                  },
+                ),
+              ),
+            if (firstTime)
+              const Expanded(
+                child: Center(
+                  child: Text("Write Something into the search field."),
+                ),
+              )
+          ],
+        ),
       ),
     );
   }
