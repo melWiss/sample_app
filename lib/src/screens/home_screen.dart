@@ -1,5 +1,4 @@
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/material.dart';
 import 'package:sample_app/src/blocs/starting/starting_component.dart';
 
 class HomeScreen extends StatelessWidget {

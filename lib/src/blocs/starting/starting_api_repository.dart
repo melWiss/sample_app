@@ -11,7 +11,7 @@ class StartingPointApiRepository {
   static Future<List<Location>> getLocations(String keyword) async {
     try {
       var response = await http.get(Uri.parse("$apiUrl$keyword"));
-      Map data = jsonDecode(response.body) as Map;
+      Map data = jsonDecode(utf8.decode(response.bodyBytes)) as Map;
       List locationsData = data["locations"] as List;
       List<Location> locations = locationsData
           .map<Location>(

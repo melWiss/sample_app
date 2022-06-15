@@ -2,9 +2,7 @@ import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:sample_app/src/blocs/starting/starting_api_repository.dart';
 import 'package:sample_app/src/blocs/starting/starting_bloc.dart';
-import 'package:sample_app/src/blocs/starting/starting_cache_repository.dart';
 import 'package:sample_app/src/blocs/starting/starting_exception.dart';
 import 'package:sample_app/src/models/models.dart';
 import 'package:sample_app/src/widgets/widgets.dart';
@@ -28,12 +26,11 @@ class _StartingPointComponentState extends State<StartingPointComponent> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     searchTextController.addListener(() {
       waitingTurn++;
       Timer(
-        Duration(seconds: 2),
+        const Duration(seconds: 1),
         (() {
           if (--waitingTurn == 0) {
             setState(() {
@@ -63,7 +60,7 @@ class _StartingPointComponentState extends State<StartingPointComponent> {
               }
               showYesConnectivity = true;
             });
-            Timer(Duration(seconds: 3), () {
+            Timer(const Duration(seconds: 3), () {
               setState(() {
                 showYesConnectivity = false;
               });
@@ -80,7 +77,6 @@ class _StartingPointComponentState extends State<StartingPointComponent> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     connectivitySubscription?.cancel();
     super.dispose();
   }
@@ -105,9 +101,10 @@ class _StartingPointComponentState extends State<StartingPointComponent> {
                   labelText: "Search Field",
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.all(
-                      Radius.circular(30),
+                      Radius.circular(8),
                     ),
                   ),
+                  prefixIcon: Icon(Icons.search),
                 ),
               ),
             ),
@@ -182,16 +179,14 @@ class _StartingPointComponentState extends State<StartingPointComponent> {
                 },
                 title: Text(locations[index].name ?? ""),
                 subtitle: Text(
-                    "Type: ${locations[index].type?.toUpperCase()}, Locality: ${locations[index].parent?.name?.toUpperCase()}"),
+                    "Type: ${locations[index].type?.toUpperCase()}, Locality: ${locations[index].isBest}"),
               ),
             ),
           );
         },
       );
     } else {
-      return const Center(
-        child: Text("No Result has been found"),
-      );
+      return const NoResultWidget();
     }
   }
 }

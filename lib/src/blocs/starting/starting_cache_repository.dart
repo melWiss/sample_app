@@ -21,7 +21,7 @@ class StartingPointCacheRepository {
 
   static Future<List<Location>> getCachedLocations([String? keyword]) async {
     if (_db != null) {
-      var data = jsonDecode(_db!.readAsStringSync()) as List;
+      var data = jsonDecode(utf8.decode(_db!.readAsBytesSync())) as List;
       List<Location> locations = data
           .map<Location>(
             (e) => Location.fromMap(e),
@@ -46,7 +46,7 @@ class StartingPointCacheRepository {
       List<Location> cachedLocations = await getCachedLocations();
       uniqueLocations.addAll(cachedLocations);
       uniqueLocations.addAll(locations);
-      _db!.writeAsStringSync(jsonEncode(uniqueLocations.toList()));
+      _db!.writeAsBytesSync(utf8.encode(jsonEncode(uniqueLocations.toList())));
       return true;
     } catch (e) {
       return false;
