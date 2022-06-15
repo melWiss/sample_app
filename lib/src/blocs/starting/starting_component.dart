@@ -9,15 +9,14 @@ import 'package:sample_app/src/blocs/starting/starting_exception.dart';
 import 'package:sample_app/src/models/models.dart';
 import 'package:sample_app/src/widgets/widgets.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
-  static const String route = "/";
+class StartingPointComponent extends StatefulWidget {
+  const StartingPointComponent({Key? key}) : super(key: key);
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<StartingPointComponent> createState() => _StartingPointComponentState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _StartingPointComponentState extends State<StartingPointComponent> {
   TextEditingController searchTextController = TextEditingController();
   bool firstTime = true;
   bool noConnectivity = false;

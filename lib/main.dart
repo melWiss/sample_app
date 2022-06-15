@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sample_app/src/blocs/starting/starting_cache_repository.dart';
-import 'package:sample_app/src/blocs/starting/starting_component.dart';
+import 'package:sample_app/src/screens/home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
