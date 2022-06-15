@@ -38,6 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
           if (--waitingTurn == 0) {
             setState(() {
               if (searchTextController.text.isNotEmpty) {
+                startingPointBloc.showCircularProgressIndicator();
                 startingPointBloc.searchLocation(searchTextController.text);
                 firstTime = false;
               }
@@ -134,7 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             if (!firstTime)
               Expanded(
-                child: StreamWidget<List<Location>>(
+                child: StreamWidget<List<Location>?>(
                   stream: startingPointBloc.stream,
                   onResult: (context, locations) =>
                       renderLocationsList(locations!),

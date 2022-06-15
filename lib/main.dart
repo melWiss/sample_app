@@ -4,6 +4,7 @@ import 'package:sample_app/src/blocs/starting/starting_cache_repository.dart';
 import 'package:sample_app/src/blocs/starting/starting_component.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await StartingPointCacheRepository.initDb();
   runApp(MyApp());
 }

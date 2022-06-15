@@ -5,11 +5,15 @@ import 'package:sample_app/src/blocs/starting/starting_exception.dart';
 import 'package:sample_app/src/models/models.dart';
 
 class StartingPointBloc {
-  final BehaviorSubject<List<Location>> _controller =
-      BehaviorSubject<List<Location>>();
+  final BehaviorSubject<List<Location>?> _controller =
+      BehaviorSubject<List<Location>?>();
 
-  Stream<List<Location>> get stream => _controller.stream;
-  List<Location> get current => _controller.value;
+  Stream<List<Location>?> get stream => _controller.stream;
+  List<Location>? get current => _controller.value;
+
+  showCircularProgressIndicator() {
+    _controller.add(null);
+  }
 
   Future<void> initLocations() async {
     await StartingPointCacheRepository.initDb();
