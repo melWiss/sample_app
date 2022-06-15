@@ -1,3 +1,5 @@
+# Download
+[Click on this link to download](https://github.com/melWiss/sample_app/releases/tag/v0.0.1-dev)
 # sample_app
 
 A new Flutter project.
