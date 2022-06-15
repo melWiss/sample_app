@@ -46,7 +46,6 @@ class StartingPointCacheRepository {
       List<Location> cachedLocations = await getCachedLocations();
       uniqueLocations.addAll(cachedLocations);
       uniqueLocations.addAll(locations);
-      // print(locations.first == cachedLocations.first);
       _db!.writeAsStringSync(jsonEncode(uniqueLocations.toList()));
       return true;
     } catch (e) {

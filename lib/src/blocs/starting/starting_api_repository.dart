@@ -21,9 +21,14 @@ class StartingPointApiRepository {
       StartingPointCacheRepository.cacheLocations(locations);
       return locations;
     } on SocketException catch (e) {
+      List<Location> cachedLocations =
+          await StartingPointCacheRepository.getCachedLocations();
       throw StartingPointException(
-        cachedLocations:
-            await StartingPointCacheRepository.getCachedLocations(),
+        cachedLocations: cachedLocations
+            .where((element) =>
+                element.name?.toUpperCase().contains(keyword.toUpperCase()) ??
+                false)
+            .toList(),
         error: e.message,
       );
     }
