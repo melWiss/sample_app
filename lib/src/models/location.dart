@@ -82,14 +82,7 @@ class Location {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is Location &&
-        other.id == id &&
-        other.name == name &&
-        other.disassembledName == disassembledName &&
-        other.coord == coord &&
-        other.type == type &&
-        other.isBest == isBest &&
-        other.parent == parent;
+    return other is Location && other.id == id;
   }
 
   @override
@@ -97,7 +90,6 @@ class Location {
     return id.hashCode ^
         name.hashCode ^
         disassembledName.hashCode ^
-        coord.hashCode ^
         type.hashCode ^
         isBest.hashCode ^
         parent.hashCode;
