@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
     );
   }
 
+  /// it contains all routes of the app, which is here only one route.
   final GoRouter _router = GoRouter(
     routes: <GoRoute>[
       GoRoute(

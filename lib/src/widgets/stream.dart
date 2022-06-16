@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+/// StreamWidget is an equivalent for StreamBuilder with the goal of reducing
+/// StreamBuilder's boiler plate code (like handling the state of error and
+/// waiting for results).
 class StreamWidget<T> extends StatelessWidget {
   final Stream<T>? stream;
   final Widget Function(BuildContext context, T? data)? onResult;

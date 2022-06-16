@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+/// FutureWidget is an equivalent for FutureBuilder with the goal of reducing
+/// FutureBuilder's boiler plate code (like handling the state of error and
+/// waiting for results).
 class FutureWidget<T> extends StatelessWidget {
   final Future<T>? future;
   final Widget Function(BuildContext context, T? data)? onResult;
