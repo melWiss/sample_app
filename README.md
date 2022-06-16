@@ -2,17 +2,19 @@
 [Click on this link to download](https://github.com/melWiss/sample_app/releases)
 # sample_app
 
-A new Flutter project.
+A new Flutter project that let you search for locations from a Rest and select it.
 
 ## Getting Started
+Clone the project.
+run "flutter pub get" and "flutter run".
 
-This project is a starting point for a Flutter application.
+## The approach
+This app is about loading data from server and caching it so we decided to approach this project by
+using the Bloc pattern to manage the different state of the data (load data from API, cache and get
+data from the device storage in case there's no internet connectivity).
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+The Project is mainly devided to 4 parts/folders which are:
+  - blocs (it contains the different buisiness logic components of the app)
+  - models (it contains the different data models)
+  - screens (it contains all the screens of the app)
+  - widgets (it contains all reusable widgets)
