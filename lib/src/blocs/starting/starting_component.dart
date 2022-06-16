@@ -7,6 +7,8 @@ import 'package:sample_app/src/blocs/starting/starting_exception.dart';
 import 'package:sample_app/src/models/models.dart';
 import 'package:sample_app/src/widgets/widgets.dart';
 
+/// This component is the responsible show and interacting the locations
+/// in the app. It uses Bloc pattern for handling the state.
 class StartingPointComponent extends StatefulWidget {
   const StartingPointComponent({Key? key}) : super(key: key);
 
@@ -16,10 +18,15 @@ class StartingPointComponent extends StatefulWidget {
 
 class _StartingPointComponentState extends State<StartingPointComponent> {
   TextEditingController searchTextController = TextEditingController();
+  // for guiding the user when he open the app.
   bool firstTime = true;
+  // to see if there's no connectivity or not.
   bool noConnectivity = false;
+  // it indicates to whether show "Internet Connectivity is Established" or no.
   bool showYesConnectivity = false;
+  // this counter is used to indicate that the user has stopped typing.
   int waitingTurn = 0;
+  // this is the reference to the selected location.
   Location? selectedLocation;
 
   StreamSubscription<ConnectivityResult>? connectivitySubscription;
@@ -27,6 +34,8 @@ class _StartingPointComponentState extends State<StartingPointComponent> {
   @override
   void initState() {
     super.initState();
+    // this listener is meant for launching the search when the user stops typing
+    // in the keyboard.
     searchTextController.addListener(() {
       waitingTurn++;
       Timer(
@@ -45,6 +54,7 @@ class _StartingPointComponentState extends State<StartingPointComponent> {
       );
     });
 
+    // this part is to listen for Connectivity events.
     connectivitySubscription = Connectivity()
         .onConnectivityChanged
         .listen((ConnectivityResult result) {
@@ -77,6 +87,7 @@ class _StartingPointComponentState extends State<StartingPointComponent> {
 
   @override
   void dispose() {
+    // cancel connectivitySubscription when we're finished with it.
     connectivitySubscription?.cancel();
     super.dispose();
   }
@@ -155,6 +166,8 @@ class _StartingPointComponentState extends State<StartingPointComponent> {
     );
   }
 
+  // this function renders the list of locations if the locations parameter
+  // is not empty.
   Widget renderLocationsList(List<Location> locations) {
     if (locations.isNotEmpty) {
       return ListView.builder(

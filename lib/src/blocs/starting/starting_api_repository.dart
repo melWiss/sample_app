@@ -7,7 +7,9 @@ import 'package:sample_app/src/blocs/starting/starting_exception.dart';
 import 'package:sample_app/src/consts.dart';
 import 'package:sample_app/src/models/location.dart';
 
+/// This class helps to retrieve the list of locations from the rest API.
 class StartingPointApiRepository {
+  /// this function retrieves the list of locations by using a keyword string.
   static Future<List<Location>> getLocations(String keyword) async {
     try {
       var response = await http.get(Uri.parse("$apiUrl$keyword"));
